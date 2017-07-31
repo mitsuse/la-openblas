@@ -1,7 +1,12 @@
 matrix:
   include:
-    - os: osx
-      language: swift
-      osx_image: xcode8.3
+    - os: linux
+      sudo: required
+services:
+  - docker
+install:
+  - docker build -t swift .
 script:
-  - swift test
+  # Workaround: Use root instead of developer.
+  # - docker run -u developer -v $TRAVIS_BUILD_DIR:/mnt/project swift swift test -C /mnt/project
+  - docker run -v $TRAVIS_BUILD_DIR:/mnt/project swift swift test -C /mnt/project
